@@ -109,12 +109,12 @@ public class BlockCreativePortal extends BlockContainer {
             MinecraftServer minecraftserver = entityIn.getServer();
             int i = entityIn.dimension;
             WorldServer worldserver = minecraftserver.worldServerForDimension(i);
-            System.out.println("WorldServer: " + worldserver.toString());
+            System.out.println("StartDim: " + entityIn.dimension);
             WorldServer worldserver1 = minecraftserver.worldServerForDimension(dimensionIn);
-            System.out.println("WorldServer1: " + worldserver1.toString());
+            System.out.println("EndDim: " + dimensionIn);
             entityIn.dimension = dimensionIn;
 
-            if (i == 1 && dimensionIn == CreativeDimensions.dimensionID)
+            if (i == 0 && dimensionIn == CreativeDimensions.dimensionID)
             {
                 System.out.println("Changing Dimension...");
                 worldserver1 = minecraftserver.worldServerForDimension(CreativeDimensions.dimensionID);
@@ -126,7 +126,7 @@ public class BlockCreativePortal extends BlockContainer {
             entityIn.worldObj.theProfiler.startSection("reposition");
             BlockPos blockpos;
 
-            if (dimensionIn != 1)
+            if (dimensionIn != 0)
             {
                 blockpos = worldserver1.getSpawnCoordinate();
             }
@@ -147,6 +147,12 @@ public class BlockCreativePortal extends BlockContainer {
                     d1 = MathHelper.clamp_double(d1 * 8.0D, worldserver1.getWorldBorder().minZ() + 16.0D, worldserver1.getWorldBorder().maxZ() - 16.0D);
                 }
 
+                else if (dimensionIn == 42)
+                {
+                    d0 = MathHelper.clamp_double(d0 * 8.0D, worldserver1.getWorldBorder().minX() + 16.0D, worldserver1.getWorldBorder().maxX() - 16.0D);
+                    d1 = MathHelper.clamp_double(d1 * 8.0D, worldserver1.getWorldBorder().minZ() + 16.0D, worldserver1.getWorldBorder().maxZ() - 16.0D);
+                }
+
                 d0 = (double)MathHelper.clamp_int((int)d0, -29999872, 29999872);
                 d1 = (double)MathHelper.clamp_int((int)d1, -29999872, 29999872);
                 float f = entityIn.rotationYaw;
@@ -160,6 +166,7 @@ public class BlockCreativePortal extends BlockContainer {
 
             worldserver.updateEntityWithOptionalForce(entityIn, false);
             entityIn.worldObj.theProfiler.endStartSection("reloading");
+            System.out.println("Reloading...");
             Entity entity = EntityList.createEntityByName(EntityList.getEntityString(entityIn), worldserver1);
 
             if (entity != null)
