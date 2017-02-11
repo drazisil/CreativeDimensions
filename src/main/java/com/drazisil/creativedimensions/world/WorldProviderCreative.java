@@ -171,7 +171,7 @@ public class WorldProviderCreative extends WorldProvider
     @SideOnly(Side.CLIENT)
     public float getCloudHeight()
     {
-        return this.terrainType.getCloudHeight();
+        return worldObj.getWorldInfo().getTerrainType().getCloudHeight();
     }
 
     @SideOnly(Side.CLIENT)
@@ -198,7 +198,7 @@ public class WorldProviderCreative extends WorldProvider
     @SideOnly(Side.CLIENT)
     public double getVoidFogYFactor()
     {
-        return this.terrainType.voidFadeMagnitude();
+        return worldObj.getWorldInfo().getTerrainType().voidFadeMagnitude();
     }
 
     /**

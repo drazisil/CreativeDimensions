@@ -91,7 +91,11 @@ public class BlockCreativePortal extends BlockContainer {
     {
         if (!entityIn.isRiding() && !entityIn.isBeingRidden() && entityIn.isNonBoss() && !worldIn.isRemote && entityIn.getEntityBoundingBox().intersectsWith(state.getBoundingBox(worldIn, pos).offset(pos)))
         {
-            changeDimension(entityIn, CreativeDimensions.dimensionID);
+            if (entityIn.dimension != CreativeDimensions.dimensionID) {
+                changeDimension(entityIn, CreativeDimensions.dimensionID);
+            } else {
+                changeDimension(entityIn, 0);
+            }
         }
     }
 
@@ -105,7 +109,9 @@ public class BlockCreativePortal extends BlockContainer {
             MinecraftServer minecraftserver = entityIn.getServer();
             int i = entityIn.dimension;
             WorldServer worldserver = minecraftserver.worldServerForDimension(i);
+            System.out.println("WorldServer: " + worldserver.toString());
             WorldServer worldserver1 = minecraftserver.worldServerForDimension(dimensionIn);
+            System.out.println("WorldServer1: " + worldserver1.toString());
             entityIn.dimension = dimensionIn;
 
             if (i == 1 && dimensionIn == CreativeDimensions.dimensionID)
