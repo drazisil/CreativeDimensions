@@ -65,7 +65,7 @@ public class WorldProviderCreative extends WorldProvider
 
     public IChunkGenerator createChunkGenerator()
     {
-        return new ChunkProviderHell(this.worldObj, false, this.worldObj.getSeed());
+        return new ChunkProviderCreative(this.worldObj, this.worldObj.getSeed(), true, this.worldObj.getWorldInfo().getGeneratorOptions());
     }
     /**
      * Will check if the x, z position specified is alright to be set as the map spawn point

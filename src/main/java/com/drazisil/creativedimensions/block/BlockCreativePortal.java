@@ -1,26 +1,21 @@
 package com.drazisil.creativedimensions.block;
 
 import com.drazisil.creativedimensions.CreativeDimensions;
+import com.drazisil.creativedimensions.world.TeleporterCreative;
 import net.minecraft.block.BlockContainer;
 import net.minecraft.block.material.MapColor;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityList;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.server.MinecraftServer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.tileentity.TileEntityEndPortal;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.IBlockAccess;
-import net.minecraft.world.Teleporter;
 import net.minecraft.world.World;
-import net.minecraft.world.WorldServer;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
@@ -92,131 +87,12 @@ public class BlockCreativePortal extends BlockContainer {
         if (!entityIn.isRiding() && !entityIn.isBeingRidden() && entityIn.isNonBoss() && !worldIn.isRemote && entityIn.getEntityBoundingBox().intersectsWith(state.getBoundingBox(worldIn, pos).offset(pos)))
         {
             if (entityIn.dimension != CreativeDimensions.dimensionID) {
-                changeDimension(entityIn, CreativeDimensions.dimensionID);
+                Entity entity = TeleporterCreative.changeDimension(entityIn, CreativeDimensions.dimensionID);
             } else {
-                changeDimension(entityIn, 0);
+                TeleporterCreative.changeDimension(entityIn, 0);
             }
         }
     }
-
-    @Nullable
-    public Entity changeDimension(Entity entityIn, int dimensionIn)
-    {
-        if (!entityIn.worldObj.isRemote && !entityIn.isDead)
-        {
-            if (!net.minecraftforge.common.ForgeHooks.onTravelToDimension(entityIn, dimensionIn)) return null;
-            entityIn.worldObj.theProfiler.startSection("changeDimension");
-            MinecraftServer minecraftserver = entityIn.getServer();
-            int i = entityIn.dimension;
-            WorldServer worldserver = minecraftserver.worldServerForDimension(i);
-            System.out.println("StartDim: " + entityIn.dimension);
-            WorldServer worldserver1 = minecraftserver.worldServerForDimension(dimensionIn);
-            System.out.println("EndDim: " + dimensionIn);
-            entityIn.dimension = dimensionIn;
-
-            if (i == 0 && dimensionIn == CreativeDimensions.dimensionID)
-            {
-                System.out.println("Changing Dimension...");
-                worldserver1 = minecraftserver.worldServerForDimension(CreativeDimensions.dimensionID);
-                entityIn.dimension = CreativeDimensions.dimensionID;
-            }
-
-            entityIn.worldObj.removeEntity(entityIn);
-            entityIn.isDead = false;
-            entityIn.worldObj.theProfiler.startSection("reposition");
-            BlockPos blockpos;
-
-            if (dimensionIn != 0)
-            {
-                blockpos = worldserver1.getSpawnCoordinate();
-            }
-            else
-            {
-                double d0 = entityIn.posX;
-                double d1 = entityIn.posZ;
-                double d2 = 8.0D;
-
-                if (dimensionIn == -1)
-                {
-                    d0 = MathHelper.clamp_double(d0 / 8.0D, worldserver1.getWorldBorder().minX() + 16.0D, worldserver1.getWorldBorder().maxX() - 16.0D);
-                    d1 = MathHelper.clamp_double(d1 / 8.0D, worldserver1.getWorldBorder().minZ() + 16.0D, worldserver1.getWorldBorder().maxZ() - 16.0D);
-                }
-                else if (dimensionIn == 0)
-                {
-                    d0 = MathHelper.clamp_double(d0 * 8.0D, worldserver1.getWorldBorder().minX() + 16.0D, worldserver1.getWorldBorder().maxX() - 16.0D);
-                    d1 = MathHelper.clamp_double(d1 * 8.0D, worldserver1.getWorldBorder().minZ() + 16.0D, worldserver1.getWorldBorder().maxZ() - 16.0D);
-                }
-
-                else if (dimensionIn == 42)
-                {
-                    d0 = MathHelper.clamp_double(d0 * 8.0D, worldserver1.getWorldBorder().minX() + 16.0D, worldserver1.getWorldBorder().maxX() - 16.0D);
-                    d1 = MathHelper.clamp_double(d1 * 8.0D, worldserver1.getWorldBorder().minZ() + 16.0D, worldserver1.getWorldBorder().maxZ() - 16.0D);
-                }
-
-                d0 = (double)MathHelper.clamp_int((int)d0, -29999872, 29999872);
-                d1 = (double)MathHelper.clamp_int((int)d1, -29999872, 29999872);
-                float f = entityIn.rotationYaw;
-                entityIn.setLocationAndAngles(d0, entityIn.posY, d1, 90.0F, 0.0F);
-                Teleporter teleporter = worldserver1.getDefaultTeleporter();
-                System.out.println("PrePortal");
-                teleporter.placeInExistingPortal(entityIn, f);
-                System.out.println("PostPortal");
-                blockpos = new BlockPos(entityIn);
-            }
-
-            worldserver.updateEntityWithOptionalForce(entityIn, false);
-            entityIn.worldObj.theProfiler.endStartSection("reloading");
-            System.out.println("Reloading...");
-            Entity entity = EntityList.createEntityByName(EntityList.getEntityString(entityIn), worldserver1);
-
-            if (entity != null)
-            {
-                copyDataFromOld(entity, entityIn);
-
-                if (i == CreativeDimensions.dimensionID && dimensionIn == CreativeDimensions.dimensionID)
-                {
-                    BlockPos blockpos1 = worldserver1.getTopSolidOrLiquidBlock(worldserver1.getSpawnPoint());
-                    entity.moveToBlockPosAndAngles(blockpos1, entity.rotationYaw, entity.rotationPitch);
-                }
-                else
-                {
-                    entity.moveToBlockPosAndAngles(blockpos, entity.rotationYaw, entity.rotationPitch);
-                }
-
-                boolean flag = entity.forceSpawn;
-                entity.forceSpawn = true;
-                worldserver1.spawnEntityInWorld(entity);
-                entity.forceSpawn = flag;
-                worldserver1.updateEntityWithOptionalForce(entity, false);
-            }
-
-            entityIn.isDead = true;
-            entityIn.worldObj.theProfiler.endSection();
-            worldserver.resetUpdateEntityTick();
-            worldserver1.resetUpdateEntityTick();
-            entityIn.worldObj.theProfiler.endSection();
-            return entity;
-        }
-        else
-        {
-            return null;
-        }
-    }
-
-    /**
-     * Prepares this entity in new dimension by copying NBT data from entity in old dimension
-     */
-    private void copyDataFromOld(Entity entityNew, Entity entityIn)
-    {
-        NBTTagCompound nbttagcompound = entityIn.writeToNBT(new NBTTagCompound());
-        nbttagcompound.removeTag("Dimension");
-        entityNew.readFromNBT(nbttagcompound);
-        entityNew.timeUntilPortal = entityIn.timeUntilPortal;
-        // entityNew.lastPortalPos = entityIn.lastPortalPos;
-        // entityNew.lastPortalVec = entityIn.lastPortalVec;
-        // entityNew.teleportDirection = entityIn.teleportDirection;
-    }
-
 
     @SideOnly(Side.CLIENT)
     public void randomDisplayTick(IBlockState stateIn, World worldIn, BlockPos pos, Random rand)
