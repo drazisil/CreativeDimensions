@@ -1,10 +1,9 @@
 package com.drazisil.creativedimensions;
 
-import com.drazisil.creativedimensions.item.ItemWand;
+import com.drazisil.creativedimensions.client.renderer.ItemRenderRegister;
+import com.drazisil.creativedimensions.items.ModItems;
 import com.drazisil.creativedimensions.proxy.CommonProxy;
-import com.drazisil.creativedimensions.world.CreativeDimensionsWorldGenerator;
-import net.minecraft.creativetab.CreativeTabs;
-import net.minecraft.init.Blocks;
+import net.minecraft.block.Block;
 import net.minecraft.item.Item;
 import net.minecraft.world.DimensionType;
 import net.minecraftforge.common.DimensionManager;
@@ -18,6 +17,8 @@ import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+
+import static com.drazisil.creativedimensions.items.ModItems.itemWand;
 
 @Mod(modid = CreativeDimensions.MODID, version = CreativeDimensions.VERSION)
 @Mod.EventBusSubscriber
@@ -44,13 +45,17 @@ public class CreativeDimensions
     public void preInit(FMLPreInitializationEvent event) {
         // load config
         Configuration config = new Configuration(event.getSuggestedConfigurationFile());
+        ModItems.createItems();
     }
     
     @EventHandler
     public void init(FMLInitializationEvent event)
     {
-        // some example code
-        System.out.println("I'm a Creative Dimension >> "+Blocks.DIRT.getUnlocalizedName());
+        ItemRenderRegister.registerItemRenderer();
+
+        System.out.println("ItemWand1 >> " + itemWand.getUnlocalizedName());
+        System.out.println("ItemWand2 >> " + itemWand.getRegistryName());
+
     }
 
     @EventHandler
@@ -69,10 +74,19 @@ public class CreativeDimensions
     }
 
     @SubscribeEvent
+    public void registerBlocks(RegistryEvent.Register<Block> event) {
+        ModBlocks.createBlocks();
+    }
+
+    @SubscribeEvent
     public static void registerItems(RegistryEvent.Register<Item> event)
     {
-        event.getRegistry().registerAll(
-                new ItemWand().setRegistryName(MODID, "wand").setCreativeTab(CreativeTabs.TOOLS)
-        );
+//        itemWand = new ItemWand();
+//        GameRegistry.register(itemWand);
+//        GameRegistry.register(itemWand, new ResourceLocation(CreativeDimensions.MODID, "wand"));
+
+//        ModelManager modelManager = Minecraft.getMinecraft().getRenderItem().getItemModelMesher().getModelManager();
     }
+
+
 }
