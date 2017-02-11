@@ -41,7 +41,7 @@ public class ItemWand extends Item {
         this.setMaxDamage(material.getMaxUses());
         this.setCreativeTab(CreativeTabs.TOOLS);
         this.speed = material.getDamageVsEntity() + 1.0F;
-        this.setUnlocalizedName("wand");
+        this.setUnlocalizedName(CreativeDimensions.MODID + ":wand");
     }
 
     /**

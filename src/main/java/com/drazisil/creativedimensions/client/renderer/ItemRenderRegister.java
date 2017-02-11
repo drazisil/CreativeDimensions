@@ -19,8 +19,8 @@ public class ItemRenderRegister {
     }
 
     public static void reg(Item item) {
-        System.out.println("ItemWand Name Reg >> " + item.getUnlocalizedName().substring(5));
+        System.out.println("ItemWand Name Reg >> " + item.getUnlocalizedName());
         Minecraft.getMinecraft().getRenderItem().getItemModelMesher()
-                .register(item, 0, new ModelResourceLocation(modid + ":" + item.getUnlocalizedName().substring(5), "inventory"));
+                .register(item, 0, new ModelResourceLocation(modid + ":" + "wand", "inventory"));
     }
 }
