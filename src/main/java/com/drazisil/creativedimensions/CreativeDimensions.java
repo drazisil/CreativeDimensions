@@ -3,12 +3,14 @@ package com.drazisil.creativedimensions;
 import com.drazisil.creativedimensions.client.renderer.ItemRenderRegister;
 import com.drazisil.creativedimensions.items.ModItems;
 import com.drazisil.creativedimensions.proxy.CommonProxy;
+import com.drazisil.creativedimensions.world.WorldProviderCreative;
 import net.minecraft.block.Block;
 import net.minecraft.item.Item;
 import net.minecraft.world.DimensionType;
 import net.minecraftforge.common.DimensionManager;
 import net.minecraftforge.common.config.Configuration;
 import net.minecraftforge.event.RegistryEvent;
+import net.minecraftforge.event.entity.EntityTravelToDimensionEvent;
 import net.minecraftforge.fml.common.FMLLog;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.Mod.EventHandler;
@@ -56,11 +58,15 @@ public class CreativeDimensions
         System.out.println("ItemWand1 >> " + itemWand.getUnlocalizedName());
         System.out.println("ItemWand2 >> " + itemWand.getRegistryName());
 
+        // Register Dimension
+        DimensionType.register("creative", "_creative", CreativeDimensions.dimensionProviderID, WorldProviderCreative.class, false);
+        DimensionManager.registerDimension(CreativeDimensions.dimensionID, DimensionType.valueOf("creative"));
+
     }
 
     @EventHandler
     public void postInit(FMLPostInitializationEvent event) {
-        // register dimension with Forge
+/*        // register dimension with Forge
         if (!DimensionManager.isDimensionRegistered(CreativeDimensions.dimensionID))
         {
             DimensionManager.registerDimension(CreativeDimensions.dimensionID, DimensionType.OVERWORLD);
@@ -70,7 +76,7 @@ public class CreativeDimensions
             FMLLog.warning("[CreativeDimensions] Creative Dimensions detected that the configured dimension id '%d' is being used.  Using backup ID.  It is recommended that you configure this mod to use a unique dimension ID.", dimensionID);
             DimensionManager.registerDimension(CreativeDimensions.backupdimensionID, DimensionType.OVERWORLD);
             CreativeDimensions.dimensionID = CreativeDimensions.backupdimensionID;
-        }
+        }*/
     }
 
     @SubscribeEvent
@@ -86,6 +92,11 @@ public class CreativeDimensions
 //        GameRegistry.register(itemWand, new ResourceLocation(CreativeDimensions.MODID, "wand"));
 
 //        ModelManager modelManager = Minecraft.getMinecraft().getRenderItem().getItemModelMesher().getModelManager();
+    }
+
+    @SubscribeEvent
+    public static void onTravelToDimension(EntityTravelToDimensionEvent event) {
+        System.out.println(event.getEntity() + " is traveling to dimension " + event.getDimension());
     }
 
 
