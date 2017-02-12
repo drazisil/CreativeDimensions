@@ -1,17 +1,12 @@
 package com.drazisil.creativedimensions;
 
-import com.drazisil.creativedimensions.client.renderer.ItemRenderRegister;
-import com.drazisil.creativedimensions.items.ModItems;
+import com.drazisil.creativedimensions.block.ModBlocks;
 import com.drazisil.creativedimensions.proxy.CommonProxy;
-import com.drazisil.creativedimensions.world.WorldProviderCreative;
 import net.minecraft.block.Block;
 import net.minecraft.item.Item;
-import net.minecraft.world.DimensionType;
-import net.minecraftforge.common.DimensionManager;
 import net.minecraftforge.common.config.Configuration;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.event.entity.EntityTravelToDimensionEvent;
-import net.minecraftforge.fml.common.FMLLog;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.Mod.EventHandler;
 import net.minecraftforge.fml.common.SidedProxy;
@@ -19,8 +14,6 @@ import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
-
-import static com.drazisil.creativedimensions.items.ModItems.itemWand;
 
 @Mod(modid = CreativeDimensions.MODID, version = CreativeDimensions.VERSION)
 @Mod.EventBusSubscriber
@@ -47,36 +40,20 @@ public class CreativeDimensions
     public void preInit(FMLPreInitializationEvent event) {
         // load config
         Configuration config = new Configuration(event.getSuggestedConfigurationFile());
-        ModItems.createItems();
+
+        proxy.preInit(event);
     }
     
     @EventHandler
     public void init(FMLInitializationEvent event)
     {
-        ItemRenderRegister.registerItemRenderer();
-
-        System.out.println("ItemWand1 >> " + itemWand.getUnlocalizedName());
-        System.out.println("ItemWand2 >> " + itemWand.getRegistryName());
-
-        // Register Dimension
-        DimensionType.register("creative", "_creative", CreativeDimensions.dimensionProviderID, WorldProviderCreative.class, false);
-        DimensionManager.registerDimension(CreativeDimensions.dimensionID, DimensionType.valueOf("creative"));
-
+        proxy.init(event);
     }
 
     @EventHandler
     public void postInit(FMLPostInitializationEvent event) {
-/*        // register dimension with Forge
-        if (!DimensionManager.isDimensionRegistered(CreativeDimensions.dimensionID))
-        {
-            DimensionManager.registerDimension(CreativeDimensions.dimensionID, DimensionType.OVERWORLD);
-        }
-        else
-        {
-            FMLLog.warning("[CreativeDimensions] Creative Dimensions detected that the configured dimension id '%d' is being used.  Using backup ID.  It is recommended that you configure this mod to use a unique dimension ID.", dimensionID);
-            DimensionManager.registerDimension(CreativeDimensions.backupdimensionID, DimensionType.OVERWORLD);
-            CreativeDimensions.dimensionID = CreativeDimensions.backupdimensionID;
-        }*/
+
+        proxy.postInit(event);
     }
 
     @SubscribeEvent
@@ -87,11 +64,6 @@ public class CreativeDimensions
     @SubscribeEvent
     public static void registerItems(RegistryEvent.Register<Item> event)
     {
-//        itemWand = new ItemWand();
-//        GameRegistry.register(itemWand);
-//        GameRegistry.register(itemWand, new ResourceLocation(CreativeDimensions.MODID, "wand"));
-
-//        ModelManager modelManager = Minecraft.getMinecraft().getRenderItem().getItemModelMesher().getModelManager();
     }
 
     @SubscribeEvent

@@ -1,4 +1,4 @@
-package com.drazisil.creativedimensions;
+package com.drazisil.creativedimensions.block;
 
 import com.drazisil.creativedimensions.block.BlockCreativePortal;
 import net.minecraft.block.Block;
