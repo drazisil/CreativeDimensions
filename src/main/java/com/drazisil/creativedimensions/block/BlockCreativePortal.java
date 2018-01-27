@@ -87,11 +87,15 @@ public class BlockCreativePortal extends BlockContainer {
         if (!entityIn.isRiding() && !entityIn.isBeingRidden() && entityIn.isNonBoss() && !worldIn.isRemote && entityIn.getEntityBoundingBox().intersectsWith(state.getBoundingBox(worldIn, pos).offset(pos)))
         {
             if (entityIn.dimension != CreativeDimensions.dimensionID) {
-                Entity entity = TeleporterCreative.changeDimension(entityIn, CreativeDimensions.dimensionID);
+                TeleporterCreative.changeDimension(entityIn, CreativeDimensions.dimensionID);
             } else {
                 TeleporterCreative.changeDimension(entityIn, 0);
             }
         }
+        System.out.println("Block after1: " + entityIn.worldObj.getBlockState(pos));
+        System.out.println("Block state1: " + state);
+        worldIn.setBlockState(pos, this.getDefaultState(), 11);
+        System.out.println("Block after2: " + entityIn.worldObj.getBlockState(pos));
     }
 
     @SideOnly(Side.CLIENT)
