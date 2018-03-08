@@ -15,25 +15,13 @@ import net.minecraftforge.fml.common.registry.GameRegistry;
  */
 public class CommonProxy {
 
-    public void preInit(FMLPreInitializationEvent e) {
-
-        // WorldGen.init();
-//        MinecraftForge.EVENT_BUS.register(ModBlocks.class);
-//        MinecraftForge.EVENT_BUS.register(ModItems.class);
-
-
-
-    }
+    public void preInit(FMLPreInitializationEvent e) { }
 
     public void init(FMLInitializationEvent e) {
 
-//        ItemRenderRegister.registerItemRenderer();
 
         GameRegistry.registerWorldGenerator(new CreativeDimensionsWorldGenerator(), 5);
 
-
-//        System.out.println("ItemWand1 >> " + itemWand.getUnlocalizedName());
-//        System.out.println("ItemWand2 >> " + itemWand.getRegistryName());
 
         // Register Dimension
         DimensionType.register("creative", "_creative", CreativeDimensions.dimensionID, WorldProviderCreative.class, false);
@@ -41,9 +29,6 @@ public class CommonProxy {
 
     }
 
-    public void postInit(FMLPostInitializationEvent e) {
-
-
-    }
+    public void postInit(FMLPostInitializationEvent e) { }
 
 }
