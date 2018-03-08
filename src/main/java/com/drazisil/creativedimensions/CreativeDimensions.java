@@ -1,11 +1,8 @@
 package com.drazisil.creativedimensions;
 
-import com.drazisil.creativedimensions.block.ModBlocks;
 import com.drazisil.creativedimensions.proxy.CommonProxy;
-import net.minecraft.block.Block;
-import net.minecraft.item.Item;
+import net.minecraftforge.common.DimensionManager;
 import net.minecraftforge.common.config.Configuration;
-import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.event.entity.EntityTravelToDimensionEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.Mod.EventHandler;
@@ -20,12 +17,10 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 public class CreativeDimensions
 {
     public static final String MODID = "creativedimensions";
-    public static final String VERSION = "1.0";
+    public static final String VERSION = "2.0";
     public static final String NAME = "Creative Dimensions";
 
-    public static int dimensionID = 42;
-    public static int backupdimensionID = -42;
-    public static int dimensionProviderID = -42;
+    public static int dimensionID = DimensionManager.getNextFreeDimId();
 
     // dimension provider
     // DimensionManager.registerProviderType(CreativeDimensions.dimensionProviderID, WorldProviderCreativeDimensions.class, false);
@@ -56,15 +51,6 @@ public class CreativeDimensions
         proxy.postInit(event);
     }
 
-    @SubscribeEvent
-    public void registerBlocks(RegistryEvent.Register<Block> event) {
-        ModBlocks.createBlocks();
-    }
-
-    @SubscribeEvent
-    public static void registerItems(RegistryEvent.Register<Item> event)
-    {
-    }
 
     @SubscribeEvent
     public static void onTravelToDimension(EntityTravelToDimensionEvent event) {

@@ -1,0 +1,101 @@
+[20:17:21] [main/INFO]: Setting user: Player448
+[20:17:23] [main/WARN]: Skipping bad option: lastServer:
+[20:17:23] [main/INFO]: LWJGL Version: 2.9.4
+[20:17:25] [main/INFO]: Reloading ResourceManager: Default, FMLFileResourcePack:Forge Mod Loader, FMLFileResourcePack:Minecraft Forge, FMLFileResourcePack:Creative Dimensions
+[20:17:25] [Sound Library Loader/INFO]: Starting up SoundSystem...
+[20:17:26] [Thread-4/INFO]: Initializing LWJGL OpenAL
+[20:17:26] [Thread-4/INFO]: (The LWJGL binding of OpenAL.  For more information, see http://www.lwjgl.org)
+[20:17:26] [Thread-4/INFO]: OpenAL initialized.
+[20:17:26] [Sound Library Loader/INFO]: Sound engine started
+[20:17:27] [main/INFO]: Created: 512x512 textures-atlas
+[20:17:28] [main/WARN]: Skipping bad option: lastServer:
+[20:17:28] [main/INFO]: Narrator library successfully loaded
+[20:17:28] [Realms Notification Availability checker #1/INFO]: Could not authorize you against Realms server: Invalid session id
+[20:17:31] [Server thread/INFO]: Starting integrated minecraft server version 1.12.2
+[20:17:31] [Server thread/INFO]: Generating keypair
+[20:17:32] [Server thread/INFO]: Loaded 488 advancements
+[20:17:32] [Server thread/INFO]: Preparing start region for level 0
+[20:17:33] [Server thread/INFO]: Changing view distance to 12, from 10
+[20:17:34] [Server thread/INFO]: Player448[local:E:d79fab08] logged in with entity id 370 at (187.0, 63.0, -112.0)
+[20:17:34] [Server thread/INFO]: Player448 joined the game
+[20:17:34] [Server thread/INFO]: Saving and pausing game...
+[20:17:34] [Server thread/INFO]: Saving chunks for level 'New World'/overworld
+[20:17:35] [Server thread/INFO]: Saving chunks for level 'New World'/the_nether
+[20:17:35] [Server thread/INFO]: Saving chunks for level 'New World'/the_end
+[20:17:35] [Server thread/INFO]: Saving chunks for level 'New World'/creative
+[20:17:35] [pool-2-thread-1/WARN]: Couldn't look up profile properties for com.mojang.authlib.GameProfile@5d60b3f4[id=e5f3c748-0ea0-3a62-b5e9-4fef46853cc3,name=Player448,properties={},legacy=false]
+com.mojang.authlib.exceptions.AuthenticationException: The client has sent too many requests within a certain amount of time
+	at com.mojang.authlib.yggdrasil.YggdrasilAuthenticationService.makeRequest(YggdrasilAuthenticationService.java:79) ~[YggdrasilAuthenticationService.class:?]
+	at com.mojang.authlib.yggdrasil.YggdrasilMinecraftSessionService.fillGameProfile(YggdrasilMinecraftSessionService.java:180) [YggdrasilMinecraftSessionService.class:?]
+	at com.mojang.authlib.yggdrasil.YggdrasilMinecraftSessionService$1.load(YggdrasilMinecraftSessionService.java:60) [YggdrasilMinecraftSessionService$1.class:?]
+	at com.mojang.authlib.yggdrasil.YggdrasilMinecraftSessionService$1.load(YggdrasilMinecraftSessionService.java:57) [YggdrasilMinecraftSessionService$1.class:?]
+	at com.google.common.cache.LocalCache$LoadingValueReference.loadFuture(LocalCache.java:3716) [guava-21.0.jar:?]
+	at com.google.common.cache.LocalCache$Segment.loadSync(LocalCache.java:2424) [guava-21.0.jar:?]
+	at com.google.common.cache.LocalCache$Segment.lockedGetOrLoad(LocalCache.java:2298) [guava-21.0.jar:?]
+	at com.google.common.cache.LocalCache$Segment.get(LocalCache.java:2211) [guava-21.0.jar:?]
+	at com.google.common.cache.LocalCache.get(LocalCache.java:4154) [guava-21.0.jar:?]
+	at com.google.common.cache.LocalCache.getOrLoad(LocalCache.java:4158) [guava-21.0.jar:?]
+	at com.google.common.cache.LocalCache$LocalLoadingCache.get(LocalCache.java:5147) [guava-21.0.jar:?]
+	at com.google.common.cache.LocalCache$LocalLoadingCache.getUnchecked(LocalCache.java:5153) [guava-21.0.jar:?]
+	at com.mojang.authlib.yggdrasil.YggdrasilMinecraftSessionService.fillProfileProperties(YggdrasilMinecraftSessionService.java:170) [YggdrasilMinecraftSessionService.class:?]
+	at net.minecraft.client.Minecraft.getProfileProperties(Minecraft.java:3188) [Minecraft.class:?]
+	at net.minecraft.client.resources.SkinManager$3.run(SkinManager.java:138) [SkinManager$3.class:?]
+	at java.util.concurrent.Executors$RunnableAdapter.call(Executors.java:511) [?:1.8.0_161]
+	at java.util.concurrent.FutureTask.run(FutureTask.java:266) [?:1.8.0_161]
+	at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1149) [?:1.8.0_161]
+	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:624) [?:1.8.0_161]
+	at java.lang.Thread.run(Thread.java:748) [?:1.8.0_161]
+[20:18:53] [Server thread/INFO]: Saving and pausing game...
+[20:18:53] [Server thread/INFO]: Saving chunks for level 'New World'/overworld
+[20:18:53] [Server thread/INFO]: Saving chunks for level 'New World'/the_nether
+[20:18:53] [Server thread/INFO]: Saving chunks for level 'New World'/the_end
+[20:18:53] [Server thread/INFO]: Saving chunks for level 'New World'/creative
+[20:18:55] [Server thread/INFO]: Stopping server
+[20:18:55] [Server thread/INFO]: Saving players
+[20:18:55] [Server thread/INFO]: Player448 lost connection: Disconnected
+[20:18:55] [Server thread/INFO]: Player448 left the game
+[20:18:56] [Server thread/INFO]: Stopping singleplayer server as player logged out
+[20:18:56] [Server thread/INFO]: Saving worlds
+[20:18:56] [Server thread/INFO]: Saving chunks for level 'New World'/overworld
+[20:18:56] [Server thread/INFO]: Saving chunks for level 'New World'/the_nether
+[20:18:56] [Server thread/INFO]: Saving chunks for level 'New World'/the_end
+[20:18:56] [Server thread/INFO]: Saving chunks for level 'New World'/creative
+[20:19:01] [main/INFO]: Deleting level New World
+[20:19:01] [main/INFO]: Attempt 1...
+[20:19:18] [Server thread/INFO]: Starting integrated minecraft server version 1.12.2
+[20:19:18] [Server thread/INFO]: Generating keypair
+[20:19:18] [Server thread/INFO]: Loaded 488 advancements
+[20:19:18] [Server thread/WARN]: Unable to find spawn biome
+[20:19:18] [Server thread/INFO]: Preparing start region for level 0
+[20:19:19] [Server thread/INFO]: Preparing spawn area: 19%
+[20:19:20] [Server thread/INFO]: Preparing spawn area: 43%
+[20:19:21] [Server thread/INFO]: Preparing spawn area: 67%
+[20:19:22] [Server thread/INFO]: Preparing spawn area: 90%
+[20:19:22] [Server thread/INFO]: Changing view distance to 12, from 10
+[20:19:23] [Server thread/INFO]: Player448[local:E:bb7ec48d] logged in with entity id 5431 at (6.5, 68.0, 12.5)
+[20:19:23] [Server thread/INFO]: Player448 joined the game
+[20:19:23] [Server thread/INFO]: Saving and pausing game...
+[20:19:23] [Server thread/INFO]: Saving chunks for level 'New World'/overworld
+[20:19:23] [Server thread/INFO]: Saving chunks for level 'New World'/the_nether
+[20:19:23] [Server thread/INFO]: Saving chunks for level 'New World'/the_end
+[20:19:23] [Server thread/INFO]: Saving chunks for level 'New World'/creative
+[20:19:55] [Server thread/INFO]: Saving and pausing game...
+[20:19:55] [Server thread/INFO]: Saving chunks for level 'New World'/overworld
+[20:19:55] [Server thread/INFO]: Saving chunks for level 'New World'/the_nether
+[20:19:55] [Server thread/INFO]: Saving chunks for level 'New World'/the_end
+[20:19:55] [Server thread/INFO]: Saving chunks for level 'New World'/creative
+[20:19:57] [Server thread/INFO]: Stopping server
+[20:19:57] [Server thread/INFO]: Saving players
+[20:19:57] [Server thread/INFO]: Player448 lost connection: Disconnected
+[20:19:57] [Server thread/INFO]: Player448 left the game
+[20:19:57] [Server thread/INFO]: Stopping singleplayer server as player logged out
+[20:19:57] [Server thread/INFO]: Saving worlds
+[20:19:57] [Server thread/INFO]: Saving chunks for level 'New World'/overworld
+[20:19:57] [Server thread/INFO]: Saving chunks for level 'New World'/the_nether
+[20:19:57] [Server thread/INFO]: Saving chunks for level 'New World'/the_end
+[20:19:57] [Server thread/INFO]: Saving chunks for level 'New World'/creative
+[20:20:01] [main/INFO]: Deleting level New World
+[20:20:01] [main/INFO]: Attempt 1...
+[20:20:03] [main/INFO]: Stopping!
+[20:20:03] [main/INFO]: SoundSystem shutting down...
+[20:20:03] [main/WARN]: Author: Paul Lamb, www.paulscode.com

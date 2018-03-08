@@ -2,10 +2,11 @@ package com.drazisil.creativedimensions.block;
 
 import com.drazisil.creativedimensions.CreativeDimensions;
 import com.drazisil.creativedimensions.world.TeleporterCreative;
-import net.minecraft.block.BlockContainer;
+import net.minecraft.block.Block;
 import net.minecraft.block.material.MapColor;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.Entity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
@@ -26,13 +27,15 @@ import java.util.Random;
 /**
  * Created by drazisil on 2/10/2017.
  */
-public class BlockCreativePortal extends BlockContainer {
+public class BlockCreativePortal extends Block {
     protected static final AxisAlignedBB END_PORTAL_AABB = new AxisAlignedBB(0.0D, 0.0D, 0.0D, 1.0D, 0.75D, 1.0D);
 
     public BlockCreativePortal(Material materialIn)
     {
         super(materialIn);
         this.setLightLevel(1.0F);
+        this.setCreativeTab(CreativeTabs.TOOLS);
+        this.setUnlocalizedName("creative_portal");
     }
 
     /**
@@ -84,18 +87,19 @@ public class BlockCreativePortal extends BlockContainer {
      */
     public void onEntityCollidedWithBlock(World worldIn, BlockPos pos, IBlockState state, Entity entityIn)
     {
-        if (!entityIn.isRiding() && !entityIn.isBeingRidden() && entityIn.isNonBoss() && !worldIn.isRemote && entityIn.getEntityBoundingBox().intersectsWith(state.getBoundingBox(worldIn, pos).offset(pos)))
+        System.out.println("It Touched!");
+        System.out.println("Player is in dim " + String.valueOf(entityIn.dimension) );
+        if (!entityIn.isRiding() && !entityIn.isBeingRidden() && entityIn.isNonBoss() && !worldIn.isRemote )
         {
             if (entityIn.dimension != CreativeDimensions.dimensionID) {
+                System.out.println("Should Teleport");
                 TeleporterCreative.changeDimension(entityIn, CreativeDimensions.dimensionID);
             } else {
+                System.out.println("Should Not Teleport");
                 TeleporterCreative.changeDimension(entityIn, 0);
             }
         }
-        System.out.println("Block after1: " + entityIn.worldObj.getBlockState(pos));
-        System.out.println("Block state1: " + state);
-        worldIn.setBlockState(pos, this.getDefaultState(), 11);
-        System.out.println("Block after2: " + entityIn.worldObj.getBlockState(pos));
+        System.out.println("Player is in dim " + String.valueOf(entityIn.dimension) );
     }
 
     @SideOnly(Side.CLIENT)
@@ -111,7 +115,7 @@ public class BlockCreativePortal extends BlockContainer {
     }
 
     @Nullable
-    public ItemStack getItem(World worldIn, BlockPos pos, IBlockState state)
+    public ItemStack getPickItem(World worldIn, BlockPos pos, IBlockState state)
     {
         return null;
     }

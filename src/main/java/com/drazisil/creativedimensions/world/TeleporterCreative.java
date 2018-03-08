@@ -11,6 +11,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.Teleporter;
 import net.minecraft.world.WorldServer;
+import net.minecraftforge.common.ForgeHooks;
 
 import javax.annotation.Nullable;
 import java.util.Random;
@@ -35,9 +36,9 @@ public class TeleporterCreative extends Teleporter
         @Nullable
         public static Entity changeDimension(Entity entityIn, int dimensionIn)
         {
-            if (!entityIn.worldObj.isRemote && !entityIn.isDead && entityIn instanceof EntityPlayerMP)
+            if (!entityIn.world.isRemote && !entityIn.isDead && entityIn instanceof EntityPlayerMP)
             {
-                if (!net.minecraftforge.common.ForgeHooks.onTravelToDimension(entityIn, dimensionIn)) return entityIn;
+                if (!ForgeHooks.onTravelToDimension(entityIn, dimensionIn)) return entityIn;
 
                 if (entityIn.dimension != dimensionIn) {
                     entityIn.dimension = dimensionIn;
@@ -54,9 +55,9 @@ public class TeleporterCreative extends Teleporter
         public static void transferPlayerToDimension(EntityPlayerMP player, int dimensionIn, TeleporterCreative teleporter)
         {
             int i = player.dimension;
-            WorldServer worldserver = player.getServer().getPlayerList().getServerInstance().worldServerForDimension(player.dimension);
+            WorldServer worldserver = player.getServer().getPlayerList().getServerInstance().getWorld(player.dimension);
             player.dimension = dimensionIn;
-            WorldServer worldserver1 = player.getServer().getPlayerList().getServerInstance().worldServerForDimension(player.dimension);
+            WorldServer worldserver1 = player.getServer().getPlayerList().getServerInstance().getWorld(player.dimension);
             player.connection.sendPacket(new SPacketRespawn(player.dimension, worldserver1.getDifficulty(), worldserver1.getWorldInfo().getTerrainType(), player.interactionManager.getGameType()));
             player.getServer().getPlayerList().updatePermissionLevel(player);
             worldserver.removeEntityDangerously(player);
@@ -64,7 +65,7 @@ public class TeleporterCreative extends Teleporter
             TeleporterCreative.transferEntityToWorld(player, i, worldserver, worldserver1, teleporter);
             player.getServer().getPlayerList().preparePlayer(player, worldserver);
 
-            BlockPos safePos = player.getServer().getPlayerList().getServerInstance().worldServerForDimension(dimensionIn).getTopSolidOrLiquidBlock(new BlockPos(player.posX, player.posY, player.posZ));
+            BlockPos safePos = player.getServer().getPlayerList().getServerInstance().getWorld(dimensionIn).getTopSolidOrLiquidBlock(new BlockPos(player.posX, player.posY, player.posZ));
 
             player.connection.setPlayerLocation(player.posX, safePos.getY(), player.posZ, player.rotationYaw, player.rotationPitch);
             player.interactionManager.setWorld(worldserver1);
@@ -88,12 +89,12 @@ public class TeleporterCreative extends Teleporter
             double d1 = entityIn.posZ * moveFactor;
             double d2 = 8.0D;
             float f = entityIn.rotationYaw;
-            oldWorldIn.theProfiler.startSection("moving");
+            oldWorldIn.profiler.startSection("moving");
 
             if (false && entityIn.dimension == -1)
             {
-                d0 = MathHelper.clamp_double(d0 / 8.0D, toWorldIn.getWorldBorder().minX() + 16.0D, toWorldIn.getWorldBorder().maxX() - 16.0D);
-                d1 = MathHelper.clamp_double(d1 / 8.0D, toWorldIn.getWorldBorder().minZ() + 16.0D, toWorldIn.getWorldBorder().maxZ() - 16.0D);
+                d0 = MathHelper.clamp(d0 / 8.0D, toWorldIn.getWorldBorder().minX() + 16.0D, toWorldIn.getWorldBorder().maxX() - 16.0D);
+                d1 = MathHelper.clamp(d1 / 8.0D, toWorldIn.getWorldBorder().minZ() + 16.0D, toWorldIn.getWorldBorder().maxZ() - 16.0D);
                 entityIn.setLocationAndAngles(d0, entityIn.posY, d1, entityIn.rotationYaw, entityIn.rotationPitch);
 
                 if (entityIn.isEntityAlive())
@@ -103,8 +104,8 @@ public class TeleporterCreative extends Teleporter
             }
             else if (false && entityIn.dimension == 0)
             {
-                d0 = MathHelper.clamp_double(d0 * 8.0D, toWorldIn.getWorldBorder().minX() + 16.0D, toWorldIn.getWorldBorder().maxX() - 16.0D);
-                d1 = MathHelper.clamp_double(d1 * 8.0D, toWorldIn.getWorldBorder().minZ() + 16.0D, toWorldIn.getWorldBorder().maxZ() - 16.0D);
+                d0 = MathHelper.clamp(d0 * 8.0D, toWorldIn.getWorldBorder().minX() + 16.0D, toWorldIn.getWorldBorder().maxX() - 16.0D);
+                d1 = MathHelper.clamp(d1 * 8.0D, toWorldIn.getWorldBorder().minZ() + 16.0D, toWorldIn.getWorldBorder().maxZ() - 16.0D);
                 entityIn.setLocationAndAngles(d0, entityIn.posY, d1, entityIn.rotationYaw, entityIn.rotationPitch);
 
                 if (entityIn.isEntityAlive())
@@ -137,23 +138,23 @@ public class TeleporterCreative extends Teleporter
                 }
             }
 
-            oldWorldIn.theProfiler.endSection();
+            oldWorldIn.profiler.endSection();
 
             if (lastDimension != 1)
             {
-                oldWorldIn.theProfiler.startSection("placing");
-                d0 = (double)MathHelper.clamp_int((int)d0, -29999872, 29999872);
-                d1 = (double)MathHelper.clamp_int((int)d1, -29999872, 29999872);
+                oldWorldIn.profiler.startSection("placing");
+                d0 = (double)MathHelper.clamp((int)d0, -29999872, 29999872);
+                d1 = (double)MathHelper.clamp((int)d1, -29999872, 29999872);
 
                 if (entityIn.isEntityAlive())
                 {
                     entityIn.setLocationAndAngles(d0, entityIn.posY, d1, entityIn.rotationYaw, entityIn.rotationPitch);
 
-                    toWorldIn.spawnEntityInWorld(entityIn);
+                    toWorldIn.spawnEntity(entityIn);
                     toWorldIn.updateEntityWithOptionalForce(entityIn, false);
                 }
 
-                oldWorldIn.theProfiler.endSection();
+                oldWorldIn.profiler.endSection();
             }
 
             entityIn.setWorld(toWorldIn);

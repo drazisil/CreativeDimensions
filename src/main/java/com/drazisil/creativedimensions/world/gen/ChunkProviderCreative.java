@@ -1,25 +1,22 @@
 package com.drazisil.creativedimensions.world.gen;
 
 import com.google.common.collect.Lists;
-import net.minecraft.block.BlockFalling;
-import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
-import net.minecraft.block.state.pattern.BlockMatcher;
 import net.minecraft.entity.EnumCreatureType;
 import net.minecraft.init.Biomes;
 import net.minecraft.init.Blocks;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.ChunkPos;
-import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
-import net.minecraft.world.WorldEntitySpawner;
-import net.minecraft.world.WorldType;
 import net.minecraft.world.biome.Biome;
 import net.minecraft.world.chunk.Chunk;
 import net.minecraft.world.chunk.ChunkPrimer;
-import net.minecraft.world.chunk.IChunkGenerator;
-import net.minecraft.world.gen.*;
-import net.minecraft.world.gen.feature.*;
+import net.minecraft.world.gen.FlatGeneratorInfo;
+import net.minecraft.world.gen.FlatLayerInfo;
+import net.minecraft.world.gen.IChunkGenerator;
+import net.minecraft.world.gen.MapGenBase;
+import net.minecraft.world.gen.feature.WorldGenDungeons;
+import net.minecraft.world.gen.feature.WorldGenLakes;
 import net.minecraft.world.gen.structure.*;
 
 import javax.annotation.Nullable;
@@ -166,7 +163,12 @@ public class ChunkProviderCreative implements IChunkGenerator
             return chunk;
         }
 
-        public void populate(int x, int z)
+    @Override
+    public Chunk generateChunk(int x, int z) {
+        return null;
+    }
+
+    public void populate(int x, int z)
         {
             net.minecraft.block.BlockFalling.fallInstantly = true;
             int i = x * 16;
@@ -235,7 +237,13 @@ public class ChunkProviderCreative implements IChunkGenerator
             return biome.getSpawnableList(creatureType);
         }
 
-        @Nullable
+    @Nullable
+    @Override
+    public BlockPos getNearestStructurePos(World worldIn, String structureName, BlockPos position, boolean findUnexplored) {
+        return null;
+    }
+
+    @Nullable
         public BlockPos getStrongholdGen(World worldIn, String structureName, BlockPos position)
         {
             if ("Stronghold".equals(structureName))
@@ -244,7 +252,7 @@ public class ChunkProviderCreative implements IChunkGenerator
                 {
                     if (mapgenstructure instanceof MapGenStronghold)
                     {
-                        return mapgenstructure.getClosestStrongholdPos(worldIn, position);
+                        return mapgenstructure.getNearestStructurePos(worldIn, position, false);
                     }
                 }
             }
@@ -259,4 +267,9 @@ public class ChunkProviderCreative implements IChunkGenerator
                 mapgenstructure.generate(this.worldObj, x, z, (ChunkPrimer)null);
             }
         }
+
+    @Override
+    public boolean isInsideStructure(World worldIn, String structureName, BlockPos pos) {
+        return false;
+    }
 }

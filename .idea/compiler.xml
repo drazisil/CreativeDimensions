@@ -2,9 +2,9 @@
 <project version="4">
   <component name="CompilerConfiguration">
     <bytecodeTargetLevel>
-      <module name="CreativeDimensions_api" target="1.6" />
-      <module name="CreativeDimensions_main" target="1.6" />
-      <module name="CreativeDimensions_test" target="1.6" />
+      <module name="CreativeDimensions_api" target="1.8" />
+      <module name="CreativeDimensions_main" target="1.8" />
+      <module name="CreativeDimensions_test" target="1.8" />
     </bytecodeTargetLevel>
   </component>
 </project>

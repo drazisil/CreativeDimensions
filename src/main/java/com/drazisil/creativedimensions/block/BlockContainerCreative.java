@@ -24,7 +24,6 @@ public abstract class BlockContainerCreative extends Block implements ITileEntit
     protected BlockContainerCreative(Material materialIn, MapColor color)
     {
         super(materialIn, color);
-        this.isBlockContainer = true;
     }
 
     protected boolean isInvalidNeighbor(World worldIn, BlockPos pos, EnumFacing facing)

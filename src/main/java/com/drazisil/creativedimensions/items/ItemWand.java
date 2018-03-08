@@ -1,9 +1,7 @@
 package com.drazisil.creativedimensions.items;
 
 import com.drazisil.creativedimensions.CreativeDimensions;
-import com.drazisil.creativedimensions.block.BlockCreativePortal;
 import net.minecraft.block.Block;
-import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
@@ -46,21 +44,6 @@ public class ItemWand extends Item {
         {
             IBlockState iblockstate = worldIn.getBlockState(pos);
             Block block = iblockstate.getBlock();
-
-            if (facing != EnumFacing.DOWN && worldIn.isAirBlock(pos.up()))
-            {
-                // Is this a solid block?
-                if (block.isBlockSolid(worldIn, pos, facing))
-                {
-                    block = new BlockCreativePortal(Material.PORTAL);
-                    if (!worldIn.isRemote)
-                    {
-                        worldIn.setBlockState(pos, block.getDefaultState(), 11);
-                        System.out.println("Block before: " + playerIn.worldObj.getBlockState(pos));
-                    }
-                    return EnumActionResult.FAIL;
-                }
-            }
 
             return EnumActionResult.PASS;
         }
