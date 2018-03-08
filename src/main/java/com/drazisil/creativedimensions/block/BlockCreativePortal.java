@@ -93,6 +93,7 @@ public class BlockCreativePortal extends Block {
         {
             if (entityIn.dimension != CreativeDimensions.dimensionID) {
                 System.out.println("Should Teleport");
+                worldIn.getMinecraftServer().setBuildLimit(512);
                 TeleporterCreative.changeDimension(entityIn, CreativeDimensions.dimensionID);
             } else {
                 System.out.println("Should Not Teleport");
