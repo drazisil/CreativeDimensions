@@ -246,7 +246,7 @@ public class ChunkGeneratorCreative implements IChunkGenerator {
 
             }
 
-            Chunk chunk = new Chunk(this.world, chunkprimer, x, z);
+            Chunk chunk = new CreativeChunk(this.world, chunkprimer, x, z);
             byte[] abyte = chunk.getBiomeArray();
 
             for (int i = 0; i < abyte.length; ++i)
