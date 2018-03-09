@@ -17,24 +17,28 @@ import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
+import java.util.Objects;
+
 import static java.util.Objects.isNull;
 
 @Mod.EventBusSubscriber
 public class EventEntityInteractSheep {
     @SubscribeEvent
-    public static void onEntityInteract(PlayerInteractEvent.EntityInteractSpecific event) {
+    public static void onEntityInteract(PlayerInteractEvent.EntityInteract event) {
         Entity target = event.getTarget();
-        if (target instanceof EntitySheep) {
+        if (target instanceof EntitySheep && !event.getWorld().isRemote) {
             EntityPlayer source = event.getEntityPlayer();
             int dimensionIn = source.dimension;
             World worldIn = source.world;
-            MinecraftServer server = event.getWorld().getMinecraftServer();
+            System.out.println(source.toString());
+            MinecraftServer server = source.getServer();
+            System.out.println(Objects.requireNonNull(server).toString());
             assert server != null;
-            System.out.println("Preparing to exit world " + server);
-            PlayerList playerList = server.getPlayerList();
-            if (isNull(playerList)) {
-                System.out.println("Null Player list " + playerList);
+            if (isNull(server)) {
+                System.out.println("server is null, don't crash");
             } else {
+                System.out.println("Preparing to exit world " + server);
+                PlayerList playerList = server.getPlayerList();
                 ISaveHandler saveHandler = worldIn.getSaveHandler();
                 Profiler profiler = server.profiler;
                 WorldInfo worldInfo = worldIn.getWorldInfo();
@@ -42,9 +46,7 @@ public class EventEntityInteractSheep {
                 WorldServer worldOut = new WorldServerMultiCreative(server, saveHandler, worldInfo, CreativeDimensions.dimensionID, profiler);
                 System.out.println("New world built, go!");
                 playerList.transferEntityToWorld(source, dimensionIn, worldServerIn, worldOut, new TeleporterCreative(worldServerIn));
-
             }
-
         }
     }
 }

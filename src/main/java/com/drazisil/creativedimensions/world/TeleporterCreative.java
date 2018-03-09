@@ -160,4 +160,46 @@ public class TeleporterCreative extends Teleporter
             entityIn.setWorld(toWorldIn);
         }
 
+        public void placeInPortal(Entity entityIn, float rotationYaw)
+        {
+//            if (this.world.provider.getDimensionType().getId() != 1)
+//            {
+//                if (!this.placeInExistingPortal(entityIn, rotationYaw))
+//                {
+//                    this.makePortal(entityIn);
+//                    this.placeInExistingPortal(entityIn, rotationYaw);
+//                }
+//            }
+//            else
+//            {
+//                int i = MathHelper.floor(entityIn.posX);
+//                int j = MathHelper.floor(entityIn.posY) - 1;
+//                int k = MathHelper.floor(entityIn.posZ);
+//                int l = 1;
+//                int i1 = 0;
+//
+//                for (int j1 = -2; j1 <= 2; ++j1)
+//                {
+//                    for (int k1 = -2; k1 <= 2; ++k1)
+//                    {
+//                        for (int l1 = -1; l1 < 3; ++l1)
+//                        {
+//                            int i2 = i + k1 * 1 + j1 * 0;
+//                            int j2 = j + l1;
+//                            int k2 = k + k1 * 0 - j1 * 1;
+//                            boolean flag = l1 < 0;
+//                            this.world.setBlockState(new BlockPos(i2, j2, k2), flag ? Blocks.OBSIDIAN.getDefaultState() : Blocks.AIR.getDefaultState());
+//                        }
+//                    }
+//                }
+//
+                BlockPos newPos = this.world.getSpawnCoordinate();
+
+                entityIn.setLocationAndAngles((double) 0, (double) 100, (double) 0, entityIn.rotationYaw, 0.0F);
+                entityIn.motionX = 0.0D;
+                entityIn.motionY = 0.0D;
+                entityIn.motionZ = 0.0D;
+//            }
+        }
+
     }
