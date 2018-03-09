@@ -9,6 +9,8 @@ import net.minecraftforge.fml.common.SidedProxy;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 @Mod(modid = CreativeDimensions.MODID, version = CreativeDimensions.VERSION)
 @Mod.EventBusSubscriber
@@ -17,6 +19,8 @@ public class CreativeDimensions
     public static final String MODID = "creativedimensions";
     public static final String VERSION = "2.0";
     public static final String NAME = "Creative Dimensions";
+
+    public static final Logger logger = LogManager.getLogger(MODID);
 
     public static int dimensionID = DimensionManager.getNextFreeDimId();
 

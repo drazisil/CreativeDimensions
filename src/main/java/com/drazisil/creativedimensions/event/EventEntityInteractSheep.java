@@ -27,6 +27,7 @@ import java.io.File;
 import java.util.Objects;
 import java.util.UUID;
 
+import static com.drazisil.creativedimensions.CreativeDimensions.logger;
 import static java.util.Objects.isNull;
 
 @Mod.EventBusSubscriber
@@ -37,42 +38,42 @@ public class EventEntityInteractSheep {
         if (target instanceof EntitySheep && !event.getWorld().isRemote) {
             EntityPlayerMP source = (EntityPlayerMP) event.getEntityPlayer();
             int dimensionIn = source.dimension;
-            World worldIn = source.world;
+            World sourceWorld = source.world;
             System.out.println(source.toString());
-            MinecraftServer server = source.getServer();
-            System.out.println(Objects.requireNonNull(server).toString());
-            assert server != null;
-            if (isNull(server)) {
+            MinecraftServer minecraftServer = source.getServer();
+            System.out.println(Objects.requireNonNull(minecraftServer).toString());
+            assert minecraftServer != null;
+            if (isNull(minecraftServer)) {
                 System.out.println("server is null, don't crash");
             } else {
-                System.out.println("Preparing to exit world " + server);
-                PlayerList playerList = server.getPlayerList();
-                ISaveHandler saveHandler = worldIn.getSaveHandler();
-                Profiler profiler = server.profiler;
-                WorldInfo worldInfo = worldIn.getWorldInfo();
-                WorldServer worldServerIn = server.getWorld(dimensionIn);
-                File fileIn = new File(server.getDataDirectory(), "saves");
-                MinecraftServerCreative serverOut = new MinecraftServerCreative(fileIn, server.getServerProxy(), server.getDataFixer(), new YggdrasilAuthenticationService(server.getServerProxy(), UUID.randomUUID().toString()), server.getMinecraftSessionService(), server.getGameProfileRepository(), server.getPlayerProfileCache());
-                WorldServer worldOut = new WorldServerMultiCreative(server, saveHandler, CreativeDimensions.dimensionID, worldServerIn, profiler);
+                logger.info("Preparing to exit world: " + minecraftServer);
+                PlayerList playerList = minecraftServer.getPlayerList();
+                ISaveHandler sourceSaveHandler = sourceWorld.getSaveHandler();
+                Profiler profiler = minecraftServer.profiler;
+//                WorldInfo worldInfo = worldIn.getWorldInfo();
+                WorldServer sourceWorldServer = minecraftServer.getWorld(dimensionIn);
+//                File fileIn = new File(server.getDataDirectory(), "saves_creative");
+//                MinecraftServerCreative serverOut = new MinecraftServerCreative(fileIn, server.getServerProxy(), server.getDataFixer(), new YggdrasilAuthenticationService(server.getServerProxy(), UUID.randomUUID().toString()), server.getMinecraftSessionService(), server.getGameProfileRepository(), server.getPlayerProfileCache());
+                WorldServer targetWorldServer = new WorldServerMultiCreative(minecraftServer, sourceSaveHandler, CreativeDimensions.dimensionID, sourceWorldServer, profiler);
                 System.out.println("New world built, go!");
 
 
                 // Divider
 
                 int i = source.dimension;
-                source.connection.sendPacket(new SPacketRespawn(source.dimension, worldOut.getDifficulty(), worldOut.getWorldInfo().getTerrainType(), source.interactionManager.getGameType()));
+                source.connection.sendPacket(new SPacketRespawn(source.dimension, targetWorldServer.getDifficulty(), targetWorldServer.getWorldInfo().getTerrainType(), source.interactionManager.getGameType()));
                 playerList.updatePermissionLevel(source);
 //                worldServerIn.removeEntityDangerously(source);
-                worldServerIn.removeEntityDangerously(source);
-                worldServerIn.playerEntities.remove(source);
+                sourceWorldServer.removeEntityDangerously(source);
+                sourceWorldServer.playerEntities.remove(source);
 
-                source.isDead = true;
-                playerList.transferEntityToWorld(source, i, worldServerIn, worldOut, new TeleporterCreative(worldServerIn));
-                playerList.preparePlayer(source, worldServerIn);
+                source.isDead = false;
+                playerList.transferEntityToWorld(source, i, sourceWorldServer, targetWorldServer, new TeleporterCreative(targetWorldServer));
+                playerList.preparePlayer(source, sourceWorldServer);
                 source.connection.setPlayerLocation(source.posX, source.posY, source.posZ, source.rotationYaw, source.rotationPitch);
-                source.interactionManager.setWorld(worldOut);
+                source.interactionManager.setWorld(targetWorldServer);
                 source.connection.sendPacket(new SPacketPlayerAbilities(source.capabilities));
-                playerList.updateTimeAndWeatherForPlayer(source, worldOut);
+                playerList.updateTimeAndWeatherForPlayer(source, targetWorldServer);
                 playerList.syncPlayerInventory(source);
 
                 for (PotionEffect potioneffect : source.getActivePotionEffects())
@@ -84,6 +85,7 @@ public class EventEntityInteractSheep {
                 // ===========
 
                 System.out.println("Player moved! " + source.dimension + " " + source.world);
+                event.setCanceled(true);
             }
         }
     }
