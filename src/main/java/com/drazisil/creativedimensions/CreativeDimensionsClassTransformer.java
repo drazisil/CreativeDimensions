@@ -12,9 +12,9 @@ public class CreativeDimensionsClassTransformer implements net.minecraft.launchw
     public byte[] transform(String arg0, String arg1, byte[] arg2) {
 
         //Check if the JVM is about to process the tc.class or the EntityCreeper.class
-        if (arg0.equals("oo") || arg0.equals("net.minecraft.world.WorldServer")) {
-            System.out.println("********* INSIDE CREEPER TRANSFORMER ABOUT TO PATCH: " + arg0);
-//            arg2 = patchClassInJar(arg0, arg2, arg0, CreativeDimensionFMLLoadingPlugin.location);
+        if (arg0.equals("bsb") || arg0.equals("net.minecraft.client.multiplayer.WorldClient")) {
+            System.out.println("********* INSIDE CREATIVE DIMENSIONS TRANSFORMER ABOUT TO PATCH: " + arg0);
+            arg2 = patchClassInJar(arg0, arg2, arg0, CreativeDimensionsFMLLoadingPlugin.location);
         }
         return arg2;
     }
