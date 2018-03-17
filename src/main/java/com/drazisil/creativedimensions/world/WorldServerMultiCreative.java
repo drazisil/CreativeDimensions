@@ -20,6 +20,8 @@ import net.minecraft.village.VillageCollection;
 import net.minecraft.world.*;
 import net.minecraft.world.border.IBorderListener;
 import net.minecraft.world.border.WorldBorder;
+import net.minecraft.world.chunk.IChunkProvider;
+import net.minecraft.world.chunk.storage.IChunkLoader;
 import net.minecraft.world.storage.DerivedWorldInfo;
 import net.minecraft.world.storage.ISaveHandler;
 import org.apache.logging.log4j.LogManager;
@@ -345,5 +347,14 @@ public class WorldServerMultiCreative extends WorldServer {
         private ServerBlockEventList()
         {
         }
+    }
+
+    /**
+     * Creates the chunk provider for this world. Called in the constructor. Retrieves provider from worldProvider?
+     */
+    protected IChunkProvider createChunkProvider()
+    {
+        IChunkLoader ichunkloader = this.saveHandler.getChunkLoader(this.provider);
+        return new ChunkProviderServerCreative(this, ichunkloader, this.provider.createChunkGenerator());
     }
 }

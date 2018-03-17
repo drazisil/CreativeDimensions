@@ -75,3 +75,10 @@ processResources {
         exclude 'mcmod.info'
     }
 }
+
+jar {
+    manifest
+            {
+                attributes("FMLCorePlugin": "com.drazisil.creativedimensions.CreativeDimensionsFMLLoadingPlugin")
+            }
+}
