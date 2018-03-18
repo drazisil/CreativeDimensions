@@ -111,6 +111,7 @@ public class WorldClient extends World
         this.profiler.endSection();
     }
 
+
     /**
      * Invalidates an AABB region of blocks from the receive queue, in the event that the block has been modified
      * client-side in the intervening 80 receive ticks.

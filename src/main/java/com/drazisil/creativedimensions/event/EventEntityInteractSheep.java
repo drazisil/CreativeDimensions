@@ -3,6 +3,7 @@ package com.drazisil.creativedimensions.event;
 import com.drazisil.creativedimensions.CreativeDimensions;
 import com.drazisil.creativedimensions.world.TeleporterCreative;
 import com.drazisil.creativedimensions.world.WorldServerMultiCreative;
+import net.minecraft.client.multiplayer.WorldClient;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.passive.EntitySheep;
 import net.minecraft.entity.player.EntityPlayerMP;

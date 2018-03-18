@@ -1,3 +1,8 @@
+configurations {
+    embed
+    compile.extendsFrom(embed)
+}
+
 buildscript {
     repositories {
         jcenter()
@@ -34,6 +39,8 @@ minecraft {
 }
 
 dependencies {
+    embed "org.javassist:javassist:3.22.0-GA"
+
     // you may put jars on which you depend on in ./libs
     // or you may define them like so..
     //compile "some.group:artifact:version:classifier"
@@ -82,14 +89,16 @@ jar {
                 attributes "FMLCorePlugin": "com.drazisil.creativedimensions.CreativeDimensionsFMLLoadingPlugin"
                 attributes 'FMLCorePluginContainsFMLMod': 'true'
             }
+    from configurations.embed.collect { it.isDirectory() ? it : zipTree(it) }
 }
 
-//reobf {
-//    // the jar artifact to reobfuscate
-//    jar {
-//            // Using non-default srg names
-//            // reobf to notch
-//            // for notch names (vanilla)
-//            mappingType = "NOTCH"
-//        }
-//    }
+reobf {
+    // the jar artifact to reobfuscate
+    jar {
+            // Using non-default srg names
+            // reobf to notch
+            // for notch names (vanilla)
+            mappingType = "NOTCH"
+//            mappingType = "SEARGE"
+        }
+    }

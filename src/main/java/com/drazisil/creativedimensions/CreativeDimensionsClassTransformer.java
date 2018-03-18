@@ -1,22 +1,66 @@
 package com.drazisil.creativedimensions;
 
 
-        import java.io.File;
-        import java.io.InputStream;
-        import java.util.zip.ZipEntry;
-        import java.util.zip.ZipFile;
+import javassist.*;
+
+import java.io.File;
+import java.io.InputStream;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipFile;
 
 public class CreativeDimensionsClassTransformer implements net.minecraft.launchwrapper.IClassTransformer {
 
     @Override
-    public byte[] transform(String arg0, String arg1, byte[] arg2) {
+    public byte[] transform(String name, String transformedName, byte[] basicClass) {
 
         //Check if the JVM is about to process the tc.class or the EntityCreeper.class
-        if (arg0.equals("bsb") || arg0.equals("net.minecraft.client.multiplayer.WorldClient")) {
-            System.out.println("********* INSIDE CREATIVE DIMENSIONS TRANSFORMER ABOUT TO PATCH: " + arg0);
-            arg2 = patchClassInJar(arg0, arg2, arg0, CreativeDimensionsFMLLoadingPlugin.location);
+        if (name.equals("amu") || name.equals("net.minecraft.world.World")) {
+            System.out.println("********* INSIDE CREATIVE DIMENSIONS TRANSFORMER ABOUT TO PATCH: " + name);
+            patchMethod(name, basicClass, name, CreativeDimensionsFMLLoadingPlugin.location);
+//            basicClass = patchClassInJar(name, basicClass, name, CreativeDimensionsFMLLoadingPlugin.location);
         }
-        return arg2;
+        return basicClass;
+    }
+
+    public void patchMethod(String name, byte[] bytes, String ObfName, File location) {
+//        org.objectweb.asm.tree.ClassNode classNode = new org.objectweb.asm.tree.ClassNode();
+//        ClassReader classReader = new ClassReader(bytes);
+//        classReader.accept(classNode, 0);
+//
+//        // find method to inject into
+//        Iterator<MethodNode> methods = classNode.methods.iterator();
+//        while (methods.hasNext()) {
+//            MethodNode m = methods.next();
+//            if (m.name.equals("func_189509_E")) {
+//                System.out.println("Located!");
+//            }
+//        }
+
+        ClassPool pool = ClassPool.getDefault();
+        CtClass cc = null;
+        try {
+            cc = pool.get(name);
+        } catch (NotFoundException e) {
+            e.printStackTrace();
+        }
+        System.out.println("Located " + cc.getName() + "!");
+        CtMethod[] methods = cc.getDeclaredMethods();
+        int i;
+        for (i = 0; i < methods.length; i++) {
+            CtMethod method = methods[i];
+            if (methods[i].getName().equals("E")) {
+                System.out.println("Located E!");
+                try {
+                    method.setBody(" { " +
+                            "System.out.println(\"maxHeight: \" + aa());"
+                    + "return $1.q() < 0 || $1.q() >= aa(); } ");
+                } catch (CannotCompileException e) {
+                    e.printStackTrace();
+                }
+                System.out.println("Patched E!");
+            }
+
+        }
     }
 
     //a small helper method that takes the class name we want to replace and our jar file.
@@ -39,7 +83,7 @@ public class CreativeDimensionsClassTransformer implements net.minecraft.launchw
                 bytes = new byte[(int) entry.getSize()];
                 zin.read(bytes);
                 zin.close();
-                System.out.println("[" + "CreeperBurnCore" + "]: " + "Class " + name + " patched!");
+                System.out.println("[" + "CreativeDimensions" + "]: " + "Class " + name + " patched!");
             }
             zip.close();
         } catch (Exception e) {
